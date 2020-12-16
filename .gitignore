@@ -1,5 +1,6 @@
 #Directories
-bin/
+/bin/
+/Hazel/vendor/Glad/bin/
 bin-int/
 
 #files
