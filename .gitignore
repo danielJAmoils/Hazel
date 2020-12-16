@@ -1,8 +1,13 @@
 #Directories
-.vs/
 bin/
 bin-int/
 
 #files
-*.user
 Sandbox/imgui.ini
+
+#Visual Studio files
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
