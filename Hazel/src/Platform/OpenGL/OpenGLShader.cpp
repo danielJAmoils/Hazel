@@ -6,9 +6,10 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-namespace Hazel {
+namespace Hazel
+{
 
-	static GLenum ShaderTypeFromString(const std::string& type)
+	static GLenum ShaderTypeFromString(const std::string &type)
 	{
 		if (type == "vertex")
 			return GL_VERTEX_SHADER;
@@ -19,14 +20,14 @@ namespace Hazel {
 		return 0;
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& filepath)
+	OpenGLShader::OpenGLShader(const std::string &filepath)
 	{
 		std::string source = ReadFile(filepath);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	OpenGLShader::OpenGLShader(const std::string &vertexSrc, const std::string &fragmentSrc)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -39,7 +40,7 @@ namespace Hazel {
 		glDeleteProgram(m_RendererID);
 	}
 
-	std::string OpenGLShader::ReadFile(const std::string& filepath)
+	std::string OpenGLShader::ReadFile(const std::string &filepath)
 	{
 		std::string result;
 		std::ifstream in(filepath, std::ios::in, std::ios::binary);
@@ -59,11 +60,11 @@ namespace Hazel {
 		return result;
 	}
 
-	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
+	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string &source)
 	{
 		std::unordered_map<GLenum, std::string> shaderSources;
 
-		const char* typeToken = "#type";
+		const char *typeToken = "#type";
 		size_t typeTokenLength = strlen(typeToken);
 		size_t pos = source.find(typeToken, 0);
 		while (pos != std::string::npos)
@@ -82,18 +83,18 @@ namespace Hazel {
 		return shaderSources;
 	}
 
-	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
+	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string> &shaderSources)
 	{
 		GLuint program = glCreateProgram();
 		std::vector<GLenum> glShaderIDs(shaderSources.size());
-		for (auto& kv : shaderSources)
+		for (auto &kv : shaderSources)
 		{
 			GLenum type = kv.first;
-			const std::string& source = kv.second;
+			const std::string &source = kv.second;
 
 			GLuint shader = glCreateShader(type);
 
-			const GLchar* sourceCStr = source.c_str();
+			const GLchar *sourceCStr = source.c_str();
 			glShaderSource(shader, 1, &sourceCStr, 0);
 
 			glCompileShader(shader);
@@ -126,7 +127,7 @@ namespace Hazel {
 
 		// Note the different functions here: glGetProgram* instead of glGetShader*.
 		GLint isLinked = 0;
-		glGetProgramiv(program, GL_LINK_STATUS, (int*)&isLinked);
+		glGetProgramiv(program, GL_LINK_STATUS, (int *)&isLinked);
 		if (isLinked == GL_FALSE)
 		{
 			GLint maxLength = 0;
@@ -139,7 +140,7 @@ namespace Hazel {
 			// We don't need the program anymore.
 			glDeleteProgram(program);
 
-			for(auto id : glShaderIDs)
+			for (auto id : glShaderIDs)
 				glDeleteShader(id);
 
 			HZ_CORE_ERROR("{0}", infoLog.data());
@@ -163,46 +164,46 @@ namespace Hazel {
 		glUseProgram(0);
 	}
 
-	void OpenGLShader::UploadUniformInt(const std::string& name, int value)
+	void OpenGLShader::UploadUniformInt(const std::string &name, int value)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1i(location, value);
 	}
 
-	void OpenGLShader::UploadUniformFloat(const std::string& name, float value)
+	void OpenGLShader::UploadUniformFloat(const std::string &name, float value)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform1f(location, value);
 	}
 
-	void OpenGLShader::UploadUniformFloat2(const std::string& name, const glm::vec2& value)
+	void OpenGLShader::UploadUniformFloat2(const std::string &name, const glm::vec2 &value)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform2f(location, value.x, value.y);
 	}
 
-	void OpenGLShader::UploadUniformFloat3(const std::string& name, const glm::vec3& value)
+	void OpenGLShader::UploadUniformFloat3(const std::string &name, const glm::vec3 &value)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform3f(location, value.x, value.y, value.z);
 	}
 
-	void OpenGLShader::UploadUniformFloat4(const std::string& name, const glm::vec4& value)
+	void OpenGLShader::UploadUniformFloat4(const std::string &name, const glm::vec4 &value)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniform4f(location, value.x, value.y, value.z, value.w);
 	}
 
-	void OpenGLShader::UploadUniformMat3(const std::string& name, const glm::mat3& matrix)
+	void OpenGLShader::UploadUniformMat3(const std::string &name, const glm::mat3 &matrix)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-	void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
+	void OpenGLShader::UploadUniformMat4(const std::string &name, const glm::mat4 &matrix)
 	{
 		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
-}
+} // namespace Hazel
