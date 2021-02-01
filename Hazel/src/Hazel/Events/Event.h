@@ -1,9 +1,10 @@
 #pragma once
-
 #include "hzpch.h"
+
 #include "Hazel/Core/Core.h"
 
 namespace Hazel {
+
 	enum class EventType
 	{
 		None = 0,
@@ -29,7 +30,7 @@ namespace Hazel {
 
 #define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override { return category; }
 
-	class HAZEL_API Event
+	class Event
 	{
 	public:
 		bool Handled = false;
@@ -71,4 +72,5 @@ namespace Hazel {
 	{
 		return os << e.ToString();
 	}
+
 }

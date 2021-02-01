@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Event.h"
+#include "Hazel/Events/Event.h"
 
 namespace Hazel {
-	class HAZEL_API MouseMovedEvent : public Event
+
+	class MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float x, float y)
@@ -21,12 +22,11 @@ namespace Hazel {
 
 		EVENT_CLASS_TYPE(MouseMoved)
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
-
 	private:
 		float m_MouseX, m_MouseY;
 	};
 
-	class HAZEL_API MouseScrolledEvent : public Event
+	class MouseScrolledEvent : public Event
 	{
 	public:
 		MouseScrolledEvent(float xOffset, float yOffset)
@@ -44,12 +44,11 @@ namespace Hazel {
 
 		EVENT_CLASS_TYPE(MouseScrolled)
 		EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
-
 	private:
 		float m_XOffset, m_YOffset;
 	};
 
-	class HAZEL_API MouseButtonEvent : public Event
+	class MouseButtonEvent : public Event
 	{
 	public:
 		inline int GetMouseButton() const { return m_Button; }
@@ -58,10 +57,11 @@ namespace Hazel {
 	protected:
 		MouseButtonEvent(int button)
 			: m_Button(button) {}
+
 		int m_Button;
 	};
 
-	class HAZEL_API MouseButtonPressedEvent : public MouseButtonEvent
+	class MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button)
@@ -77,7 +77,7 @@ namespace Hazel {
 		EVENT_CLASS_TYPE(MouseButtonPressed)
 	};
 
-	class HAZEL_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int button)
@@ -92,4 +92,5 @@ namespace Hazel {
 
 		EVENT_CLASS_TYPE(MouseButtonReleased)
 	};
+
 }
