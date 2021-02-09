@@ -6,6 +6,9 @@ bin-int/
 #files
 Sandbox/imgui.ini
 
+#profile files
+Sandbox/**.json
+
 #Visual Studio files
 .vs/
 **.sln
