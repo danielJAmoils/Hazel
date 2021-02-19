@@ -9,6 +9,9 @@ Sandbox/imgui.ini
 #profile files
 Sandbox/**.json
 
+#Hazel files
+*.log
+
 #Visual Studio files
 .vs/
 **.sln
